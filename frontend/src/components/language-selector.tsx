@@ -23,10 +23,11 @@ export default function LanguageSelector() {
             <Select
                 value={currentLanguage}
                 onChange={handleLanguageChange}
-                style={{ width: 120 }}
+                style={{ width: 140 }}
                 options={[
                     { label: 'Español', value: 'es' },
-                    { label: 'English', value: 'en' },
+                    { label: 'Quechua', value: 'qu' },
+                    { label: 'Aymara', value: 'ay' },
                 ]}
             />
         </div>

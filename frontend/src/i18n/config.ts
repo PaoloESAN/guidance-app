@@ -1,7 +1,8 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import esJSON from './locales/es.json';
-import enJSON from './locales/en.json';
+import quJSON from './locales/qu.json';
+import ayJSON from './locales/ay.json';
 
 i18n
     .use(initReactI18next)
@@ -13,7 +14,8 @@ i18n
         },
         resources: {
             es: { translation: esJSON },
-            en: { translation: enJSON },
+            qu: { translation: quJSON },
+            ay: { translation: ayJSON },
         },
     });
 
