@@ -5,6 +5,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { AntProvider } from "@/components/providers/ant-provider";
+import { I18nProvider } from "@/components/providers/i18n-provider";
 
 const inter = Inter({
     subsets: ["latin"],
@@ -26,11 +27,13 @@ export default function RootLayout({
             <body
                 className={`${inter.className} antialiased`}
             >
-                <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-                    <AntdRegistry>
-                        <AntProvider>{children}</AntProvider>
-                    </AntdRegistry>
-                </ThemeProvider>
+                <I18nProvider>
+                    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+                        <AntdRegistry>
+                            <AntProvider>{children}</AntProvider>
+                        </AntdRegistry>
+                    </ThemeProvider>
+                </I18nProvider>
             </body>
         </html>
     );

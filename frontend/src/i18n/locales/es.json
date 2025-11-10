@@ -1,0 +1,122 @@
+{
+    "common": {
+        "language": "Idioma",
+        "spanish": "Español",
+        "english": "English"
+    },
+    "home": {
+        "welcome": "Bienvenido a la página de inicio",
+        "goToForm": "Ir al formulario"
+    },
+    "form": {
+        "title": "Perfil de Orientación Laboral",
+        "subtitle": "Cuéntanos sobre ti para encontrar la mejor ruta laboral y formativa",
+        "personalInfo": "Información Personal",
+        "fullName": "Nombre completo",
+        "fullNamePlaceholder": "Tu nombre",
+        "age": "Edad",
+        "agePlaceholder": "Tu edad",
+        "gender": "Género",
+        "genderOptions": {
+            "select": "Seleccionar",
+            "male": "Masculino",
+            "female": "Femenino",
+            "other": "Otro",
+            "preferNotToSay": "Prefiero no decir"
+        },
+        "educationLevel": "Nivel de educación completado",
+        "educationLevelOptions": {
+            "select": "Seleccionar",
+            "primaryIncomplete": "Primaria incompleta",
+            "primaryComplete": "Primaria completa",
+            "secondaryIncomplete": "Secundaria incompleta",
+            "secondaryComplete": "Secundaria completa",
+            "vocational": "Formación profesional",
+            "other": "Otro"
+        },
+        "strengths": "¿En qué eres bueno? (Fortalezas)",
+        "selectAllThatApply": "Selecciona todas las que se apliquen",
+        "strengthOptions": {
+            "teamwork": "Trabajo en equipo",
+            "creativity": "Creatividad",
+            "leadership": "Liderazgo",
+            "organization": "Organización",
+            "attention": "Atención al detalle",
+            "problemSolving": "Resolución de problemas",
+            "communication": "Comunicación",
+            "patience": "Paciencia",
+            "teaching": "Enseñanza",
+            "crafts": "Manualidades",
+            "sports": "Deporte",
+            "music": "Música"
+        },
+        "tellUsMore": "Cuéntanos más (opcional)",
+        "tellUsMorePlaceholder": "Describe otras habilidades o fortalezas que creas que tienes...",
+        "laboralInterests": "Tus Intereses Laborales",
+        "whatTypeOfWork": "¿Qué tipo de trabajo te llama más la atención?",
+        "interestOptions": {
+            "workWithPeople": "Trabajo con personas",
+            "workWithMachines": "Trabajo con máquinas",
+            "manualWork": "Trabajo manual",
+            "administrativeWork": "Trabajo administrativo",
+            "creativeWork": "Trabajo creativo",
+            "outdoorWork": "Trabajo al aire libre",
+            "physicalWork": "Trabajo físico",
+            "officeWork": "Trabajo de oficina",
+            "teamWork": "Trabajo en equipo",
+            "independentWork": "Trabajo independiente",
+            "healthSector": "Sector sanitario",
+            "techSector": "Sector tecnológico"
+        },
+        "workExperience": "Experiencia Laboral",
+        "hadPreviousJobs": "¿Has tenido trabajos anteriores?",
+        "previousJobsOptions": {
+            "select": "Seleccionar",
+            "noFirstJob": "No, es mi primer trabajo",
+            "punctualJobs": "Sí, trabajos puntuales/temporales",
+            "shortTermJobs": "Sí, trabajos de corta duración",
+            "stableExperience": "Sí, experiencia laboral estable"
+        },
+        "describeExperience": "Describe tu experiencia (opcional)",
+        "describeExperiencePlaceholder": "Cuéntanos qué tipos de trabajos has tenido y qué aprendiste...",
+        "tradesOfInterest": "Oficios o Profesiones de Interés",
+        "anyTradeInterest": "¿Hay algún oficio o profesión que te atrae? (opcional)",
+        "tradeOptions": {
+            "electrician": "Electricista",
+            "carpentry": "Carpintería",
+            "plumbing": "Plomería",
+            "masonry": "Albañilería",
+            "cooking": "Cocina",
+            "hairdressing": "Peluquería",
+            "mechanics": "Mecánica",
+            "welding": "Soldadura",
+            "gardening": "Jardinería",
+            "cleaning": "Limpieza",
+            "security": "Seguridad",
+            "care": "Cuidados",
+            "sales": "Venta",
+            "logistics": "Logística"
+        },
+        "otherTrade": "¿Otro oficio? Escribe aquí...",
+        "availability": "Disponibilidad",
+        "workingHoursAvailability": "¿Cuál es tu disponibilidad horaria?",
+        "availabilityOptions": {
+            "select": "Seleccionar",
+            "fullTime": "Disponible a tiempo completo",
+            "partTime": "Disponible a tiempo parcial",
+            "mornings": "Por las mañanas",
+            "afternoons": "Por las tardes",
+            "weekends": "Fines de semana",
+            "flexible": "Flexible"
+        },
+        "trainingPrograms": "Estoy disponible para participar en programas de formación",
+        "hasTransport": "Tengo transporte propio o puedo desplazarme",
+        "specialConsiderations": "Consideraciones Especiales",
+        "specialConsiderationsDescription": "¿Hay alguna consideración que debamos saber? (opcional)",
+        "specialConsiderationsPlaceholder": "Discapacidades, limitaciones, situaciones especiales, idiomas, cuidados de personas dependientes, etc...",
+        "mainMotivation": "¿Cuál es tu principal motivación o expectativa?",
+        "mainMotivationPlaceholder": "¿Qué esperas conseguir con orientación laboral? ¿Cuál es tu objetivo?",
+        "submit": "Enviar Formulario",
+        "reset": "Limpiar Formulario"
+    }
+}

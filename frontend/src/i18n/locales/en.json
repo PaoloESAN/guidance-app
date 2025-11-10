@@ -1,0 +1,122 @@
+{
+    "common": {
+        "language": "Language",
+        "spanish": "Español",
+        "english": "English"
+    },
+    "home": {
+        "welcome": "Welcome to the home page",
+        "goToForm": "Go to form"
+    },
+    "form": {
+        "title": "Labor Guidance Profile",
+        "subtitle": "Tell us about yourself to find the best career and training path",
+        "personalInfo": "Personal Information",
+        "fullName": "Full name",
+        "fullNamePlaceholder": "Your name",
+        "age": "Age",
+        "agePlaceholder": "Your age",
+        "gender": "Gender",
+        "genderOptions": {
+            "select": "Select",
+            "male": "Male",
+            "female": "Female",
+            "other": "Other",
+            "preferNotToSay": "Prefer not to say"
+        },
+        "educationLevel": "Completed education level",
+        "educationLevelOptions": {
+            "select": "Select",
+            "primaryIncomplete": "Incomplete primary",
+            "primaryComplete": "Complete primary",
+            "secondaryIncomplete": "Incomplete secondary",
+            "secondaryComplete": "Complete secondary",
+            "vocational": "Vocational training",
+            "other": "Other"
+        },
+        "strengths": "What are you good at? (Strengths)",
+        "selectAllThatApply": "Select all that apply",
+        "strengthOptions": {
+            "teamwork": "Teamwork",
+            "creativity": "Creativity",
+            "leadership": "Leadership",
+            "organization": "Organization",
+            "attention": "Attention to detail",
+            "problemSolving": "Problem solving",
+            "communication": "Communication",
+            "patience": "Patience",
+            "teaching": "Teaching",
+            "crafts": "Crafts",
+            "sports": "Sports",
+            "music": "Music"
+        },
+        "tellUsMore": "Tell us more (optional)",
+        "tellUsMorePlaceholder": "Describe other skills or strengths you think you have...",
+        "laboralInterests": "Your Labor Interests",
+        "whatTypeOfWork": "What type of work appeals to you the most?",
+        "interestOptions": {
+            "workWithPeople": "Working with people",
+            "workWithMachines": "Working with machines",
+            "manualWork": "Manual work",
+            "administrativeWork": "Administrative work",
+            "creativeWork": "Creative work",
+            "outdoorWork": "Outdoor work",
+            "physicalWork": "Physical work",
+            "officeWork": "Office work",
+            "teamWork": "Teamwork",
+            "independentWork": "Independent work",
+            "healthSector": "Healthcare sector",
+            "techSector": "Technology sector"
+        },
+        "workExperience": "Work Experience",
+        "hadPreviousJobs": "Have you had previous jobs?",
+        "previousJobsOptions": {
+            "select": "Select",
+            "noFirstJob": "No, this is my first job",
+            "punctualJobs": "Yes, temporary/punctual jobs",
+            "shortTermJobs": "Yes, short-term jobs",
+            "stableExperience": "Yes, stable work experience"
+        },
+        "describeExperience": "Describe your experience (optional)",
+        "describeExperiencePlaceholder": "Tell us what types of jobs you've had and what you learned...",
+        "tradesOfInterest": "Trades or Professions of Interest",
+        "anyTradeInterest": "Is there any trade or profession that attracts you? (optional)",
+        "tradeOptions": {
+            "electrician": "Electrician",
+            "carpentry": "Carpentry",
+            "plumbing": "Plumbing",
+            "masonry": "Masonry",
+            "cooking": "Cooking",
+            "hairdressing": "Hairdressing",
+            "mechanics": "Mechanics",
+            "welding": "Welding",
+            "gardening": "Gardening",
+            "cleaning": "Cleaning",
+            "security": "Security",
+            "care": "Care",
+            "sales": "Sales",
+            "logistics": "Logistics"
+        },
+        "otherTrade": "Another trade? Write here...",
+        "availability": "Availability",
+        "workingHoursAvailability": "What is your working hours availability?",
+        "availabilityOptions": {
+            "select": "Select",
+            "fullTime": "Available full-time",
+            "partTime": "Available part-time",
+            "mornings": "Mornings",
+            "afternoons": "Afternoons",
+            "weekends": "Weekends",
+            "flexible": "Flexible"
+        },
+        "trainingPrograms": "I am available to participate in training programs",
+        "hasTransport": "I have my own transport or can travel",
+        "specialConsiderations": "Special Considerations",
+        "specialConsiderationsDescription": "Is there anything special we should know? (optional)",
+        "specialConsiderationsPlaceholder": "Disabilities, limitations, special situations, languages, care for dependents, etc...",
+        "mainMotivation": "What is your main motivation or expectation?",
+        "mainMotivationPlaceholder": "What do you expect to achieve with labor guidance? What is your goal?",
+        "submit": "Submit Form",
+        "reset": "Clear Form"
+    }
+}
