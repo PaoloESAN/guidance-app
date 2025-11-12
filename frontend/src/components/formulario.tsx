@@ -5,8 +5,8 @@ import { useState } from 'react';
 import '@ant-design/v5-patch-for-react-19';
 import LanguageSelector from "./language-selector";
 import ButtonTheme from "./buttonTheme";
-import { Form, Input, Select, Checkbox, Button, Card, Row, Col, Alert, Space } from 'antd';
-
+import { Form, Input, Select, Checkbox, Button, Card, Row, Col, Alert, Space, Modal } from 'antd';
+import { QueryGroqAPI } from '../../wailsjs/go/main/App';
 interface FormData {
     // Personal Info
     fullName: string;
@@ -65,6 +65,8 @@ export default function Formulario() {
 
     const [isLoading, setIsLoading] = useState(false);
     const [submitMessage, setSubmitMessage] = useState('');
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modalContent, setModalContent] = useState('');
 
     const selectedStrengths = watch('strengths');
     const selectedTrades = watch('trades');
@@ -77,9 +79,48 @@ export default function Formulario() {
         try {
             console.log('Datos del formulario:', data);
 
-            // Llamar a la funcion de wails
-            // const result = await window.go.main.App.ProcessForm(JSON.stringify(data));
+            const prompt = `Basándote en el siguiente perfil de usuario, proporciona recomendaciones detalladas de oficios y carreras vocacionales:
 
+INFORMACIÓN PERSONAL:
+- Nombre: ${data.fullName}
+- Edad: ${data.age} años
+- Género: ${data.gender}
+- Nivel educativo: ${data.educationLevel}
+
+FORTALEZAS Y HABILIDADES:
+- Fortalezas seleccionadas: ${data.strengths.join(', ') || 'No especificadas'}
+- Descripción adicional: ${data.strengthsDescription || 'No proporcionada'}
+
+INTERESES LABORALES:
+- Tipo de trabajo preferido: ${data.laboralInterests}
+
+EXPERIENCIA LABORAL:
+- Experiencia previa: ${data.previousJobs}
+- Descripción de experiencia: ${data.workExperienceDescription || 'No proporcionada'}
+
+OFICIOS DE INTERÉS:
+- Oficios seleccionados: ${data.trades.join(', ') || 'No especificados'}
+- Otros oficios de interés: ${data.otherTrade || 'No especificados'}
+
+DISPONIBILIDAD:
+- Horarios disponibles: ${data.workingHours}
+- Interesado en programas de capacitación: ${data.trainingPrograms ? 'Sí' : 'No'}
+- Tiene transporte: ${data.hasTransport ? 'Sí' : 'No'}
+
+CONSIDERACIONES ESPECIALES:
+- Consideraciones: ${data.specialConsiderations || 'No hay consideraciones especiales'}
+- Motivación principal: ${data.mainMotivation}
+
+Por favor, proporciona:
+1. Las 3-5 oficios más recomendados según el perfil del usuario
+2. Por qué cada oficio es una buena opción basándose en sus fortalezas e intereses
+3. Requisitos de formación necesarios
+4. Perspectivas de empleo y salario potencial
+5. Próximos pasos recomendados para iniciar en estos oficios`;
+
+            const respuesta = await QueryGroqAPI(prompt);
+            setModalContent(respuesta);
+            setModalVisible(true);
             setSubmitMessage(t('form.successMessage') || 'Formulario enviado correctamente');
             reset();
         } catch (error) {
@@ -175,9 +216,16 @@ export default function Formulario() {
                                     validateStatus={errors.fullName ? 'error' : ''}
                                     help={errors.fullName?.message}
                                 >
-                                    <Input
-                                        placeholder={t('form.fullNamePlaceholder')}
-                                        {...register('fullName', { required: 'El nombre es obligatorio' })}
+                                    <Controller
+                                        name="fullName"
+                                        control={control}
+                                        rules={{ required: 'El nombre es obligatorio' }}
+                                        render={({ field }) => (
+                                            <Input
+                                                placeholder={t('form.fullNamePlaceholder')}
+                                                {...field}
+                                            />
+                                        )}
                                     />
                                 </Form.Item>
                             </Col>
@@ -190,19 +238,26 @@ export default function Formulario() {
                                     validateStatus={errors.age ? 'error' : ''}
                                     help={errors.age?.message}
                                 >
-                                    <Input
-                                        type="number"
-                                        min={14}
-                                        max={30}
-                                        placeholder={t('form.agePlaceholder')}
-                                        {...register('age', {
+                                    <Controller
+                                        name="age"
+                                        control={control}
+                                        rules={{
                                             validate: (value) => {
                                                 if (!value && value !== 0) return 'La edad es obligatoria';
                                                 if (value < 14) return 'Mínimo 14 años';
                                                 if (value > 30) return 'Máximo 30 años';
                                                 return true;
                                             }
-                                        })}
+                                        }}
+                                        render={({ field }) => (
+                                            <Input
+                                                type="number"
+                                                min={14}
+                                                max={30}
+                                                placeholder={t('form.agePlaceholder')}
+                                                {...field}
+                                            />
+                                        )}
                                     />
                                 </Form.Item>
                             </Col>
@@ -213,15 +268,22 @@ export default function Formulario() {
                                     validateStatus={errors.gender ? 'error' : ''}
                                     help={errors.gender?.message}
                                 >
-                                    <Select
-                                        placeholder={t('form.genderOptions.select')}
-                                        {...register('gender', { required: 'El género es obligatorio' })}
-                                        options={[
-                                            { label: t('form.genderOptions.male'), value: 'male' },
-                                            { label: t('form.genderOptions.female'), value: 'female' },
-                                            { label: t('form.genderOptions.other'), value: 'other' },
-                                            { label: t('form.genderOptions.preferNotToSay'), value: 'preferNotToSay' },
-                                        ]}
+                                    <Controller
+                                        name="gender"
+                                        control={control}
+                                        rules={{ required: 'El género es obligatorio' }}
+                                        render={({ field }) => (
+                                            <Select
+                                                placeholder={t('form.genderOptions.select')}
+                                                {...field}
+                                                options={[
+                                                    { label: t('form.genderOptions.male'), value: 'male' },
+                                                    { label: t('form.genderOptions.female'), value: 'female' },
+                                                    { label: t('form.genderOptions.other'), value: 'other' },
+                                                    { label: t('form.genderOptions.preferNotToSay'), value: 'preferNotToSay' },
+                                                ]}
+                                            />
+                                        )}
                                     />
                                 </Form.Item>
                             </Col>
@@ -234,17 +296,24 @@ export default function Formulario() {
                                     validateStatus={errors.educationLevel ? 'error' : ''}
                                     help={errors.educationLevel?.message}
                                 >
-                                    <Select
-                                        placeholder={t('form.educationLevelOptions.select')}
-                                        {...register('educationLevel', { required: 'El nivel educativo es obligatorio' })}
-                                        options={[
-                                            { label: t('form.educationLevelOptions.primaryIncomplete'), value: 'primaryIncomplete' },
-                                            { label: t('form.educationLevelOptions.primaryComplete'), value: 'primaryComplete' },
-                                            { label: t('form.educationLevelOptions.secondaryIncomplete'), value: 'secondaryIncomplete' },
-                                            { label: t('form.educationLevelOptions.secondaryComplete'), value: 'secondaryComplete' },
-                                            { label: t('form.educationLevelOptions.vocational'), value: 'vocational' },
-                                            { label: t('form.educationLevelOptions.other'), value: 'other' },
-                                        ]}
+                                    <Controller
+                                        name="educationLevel"
+                                        control={control}
+                                        rules={{ required: 'El nivel educativo es obligatorio' }}
+                                        render={({ field }) => (
+                                            <Select
+                                                placeholder={t('form.educationLevelOptions.select')}
+                                                {...field}
+                                                options={[
+                                                    { label: t('form.educationLevelOptions.primaryIncomplete'), value: 'primaryIncomplete' },
+                                                    { label: t('form.educationLevelOptions.primaryComplete'), value: 'primaryComplete' },
+                                                    { label: t('form.educationLevelOptions.secondaryIncomplete'), value: 'secondaryIncomplete' },
+                                                    { label: t('form.educationLevelOptions.secondaryComplete'), value: 'secondaryComplete' },
+                                                    { label: t('form.educationLevelOptions.vocational'), value: 'vocational' },
+                                                    { label: t('form.educationLevelOptions.other'), value: 'other' },
+                                                ]}
+                                            />
+                                        )}
                                     />
                                 </Form.Item>
                             </Col>
@@ -281,10 +350,16 @@ export default function Formulario() {
                         </Form.Item>
 
                         <Form.Item label={t('form.tellUsMore')}>
-                            <Input.TextArea
-                                rows={3}
-                                placeholder={t('form.tellUsMorePlaceholder')}
-                                {...register('strengthsDescription')}
+                            <Controller
+                                name="strengthsDescription"
+                                control={control}
+                                render={({ field }) => (
+                                    <Input.TextArea
+                                        rows={3}
+                                        placeholder={t('form.tellUsMorePlaceholder')}
+                                        {...field}
+                                    />
+                                )}
                             />
                         </Form.Item>
                     </Card>
@@ -321,23 +396,36 @@ export default function Formulario() {
                             validateStatus={errors.previousJobs ? 'error' : ''}
                             help={errors.previousJobs?.message}
                         >
-                            <Select
-                                placeholder={t('form.previousJobsOptions.select')}
-                                {...register('previousJobs', { required: 'Debes seleccionar tu experiencia laboral' })}
-                                options={[
-                                    { label: t('form.previousJobsOptions.noFirstJob'), value: 'noFirstJob' },
-                                    { label: t('form.previousJobsOptions.punctualJobs'), value: 'punctualJobs' },
-                                    { label: t('form.previousJobsOptions.shortTermJobs'), value: 'shortTermJobs' },
-                                    { label: t('form.previousJobsOptions.stableExperience'), value: 'stableExperience' },
-                                ]}
+                            <Controller
+                                name="previousJobs"
+                                control={control}
+                                rules={{ required: 'Debes seleccionar tu experiencia laboral' }}
+                                render={({ field }) => (
+                                    <Select
+                                        placeholder={t('form.previousJobsOptions.select')}
+                                        {...field}
+                                        options={[
+                                            { label: t('form.previousJobsOptions.noFirstJob'), value: 'noFirstJob' },
+                                            { label: t('form.previousJobsOptions.punctualJobs'), value: 'punctualJobs' },
+                                            { label: t('form.previousJobsOptions.shortTermJobs'), value: 'shortTermJobs' },
+                                            { label: t('form.previousJobsOptions.stableExperience'), value: 'stableExperience' },
+                                        ]}
+                                    />
+                                )}
                             />
                         </Form.Item>
 
                         <Form.Item label={t('form.describeExperience')}>
-                            <Input.TextArea
-                                rows={3}
-                                placeholder={t('form.describeExperiencePlaceholder')}
-                                {...register('workExperienceDescription')}
+                            <Controller
+                                name="workExperienceDescription"
+                                control={control}
+                                render={({ field }) => (
+                                    <Input.TextArea
+                                        rows={3}
+                                        placeholder={t('form.describeExperiencePlaceholder')}
+                                        {...field}
+                                    />
+                                )}
                             />
                         </Form.Item>
                     </Card>
@@ -372,9 +460,15 @@ export default function Formulario() {
                         </Form.Item>
 
                         <Form.Item label={t('form.otherTrade')}>
-                            <Input
-                                placeholder={t('form.otherTrade')}
-                                {...register('otherTrade')}
+                            <Controller
+                                name="otherTrade"
+                                control={control}
+                                render={({ field }) => (
+                                    <Input
+                                        placeholder={t('form.otherTrade')}
+                                        {...field}
+                                    />
+                                )}
                             />
                         </Form.Item>
                     </Card>
@@ -386,35 +480,56 @@ export default function Formulario() {
                             validateStatus={errors.workingHours ? 'error' : ''}
                             help={errors.workingHours?.message}
                         >
-                            <Select
-                                placeholder={t('form.availabilityOptions.select')}
-                                {...register('workingHours', { required: 'Debes seleccionar disponibilidad' })}
-                                options={[
-                                    { label: t('form.availabilityOptions.fullTime'), value: 'fullTime' },
-                                    { label: t('form.availabilityOptions.partTime'), value: 'partTime' },
-                                    { label: t('form.availabilityOptions.mornings'), value: 'mornings' },
-                                    { label: t('form.availabilityOptions.afternoons'), value: 'afternoons' },
-                                    { label: t('form.availabilityOptions.weekends'), value: 'weekends' },
-                                    { label: t('form.availabilityOptions.flexible'), value: 'flexible' },
-                                ]}
+                            <Controller
+                                name="workingHours"
+                                control={control}
+                                rules={{ required: 'Debes seleccionar disponibilidad' }}
+                                render={({ field }) => (
+                                    <Select
+                                        placeholder={t('form.availabilityOptions.select')}
+                                        {...field}
+                                        options={[
+                                            { label: t('form.availabilityOptions.fullTime'), value: 'fullTime' },
+                                            { label: t('form.availabilityOptions.partTime'), value: 'partTime' },
+                                            { label: t('form.availabilityOptions.mornings'), value: 'mornings' },
+                                            { label: t('form.availabilityOptions.afternoons'), value: 'afternoons' },
+                                            { label: t('form.availabilityOptions.weekends'), value: 'weekends' },
+                                            { label: t('form.availabilityOptions.flexible'), value: 'flexible' },
+                                        ]}
+                                    />
+                                )}
                             />
                         </Form.Item>
 
                         <Form.Item>
                             <div className="space-y-2">
                                 <div>
-                                    <Checkbox
-                                        {...register('trainingPrograms')}
-                                    >
-                                        {t('form.trainingPrograms')}
-                                    </Checkbox>
+                                    <Controller
+                                        name="trainingPrograms"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <Checkbox
+                                                checked={field.value}
+                                                onChange={(e) => field.onChange(e.target.checked)}
+                                            >
+                                                {t('form.trainingPrograms')}
+                                            </Checkbox>
+                                        )}
+                                    />
                                 </div>
                                 <div>
-                                    <Checkbox
-                                        {...register('hasTransport')}
-                                    >
-                                        {t('form.hasTransport')}
-                                    </Checkbox>
+                                    <Controller
+                                        name="hasTransport"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <Checkbox
+                                                checked={field.value}
+                                                onChange={(e) => field.onChange(e.target.checked)}
+                                            >
+                                                {t('form.hasTransport')}
+                                            </Checkbox>
+                                        )}
+                                    />
                                 </div>
                             </div>
                         </Form.Item>
@@ -423,10 +538,16 @@ export default function Formulario() {
                     {/* Sección 7: Consideraciones Especiales */}
                     <Card title={t('form.specialConsiderations')} style={{ marginBottom: '1rem' }} className="mb-4">
                         <Form.Item label={t('form.specialConsiderationsDescription')}>
-                            <Input.TextArea
-                                rows={3}
-                                placeholder={t('form.specialConsiderationsPlaceholder')}
-                                {...register('specialConsiderations')}
+                            <Controller
+                                name="specialConsiderations"
+                                control={control}
+                                render={({ field }) => (
+                                    <Input.TextArea
+                                        rows={3}
+                                        placeholder={t('form.specialConsiderationsPlaceholder')}
+                                        {...field}
+                                    />
+                                )}
                             />
                         </Form.Item>
 
@@ -435,10 +556,17 @@ export default function Formulario() {
                             validateStatus={errors.mainMotivation ? 'error' : ''}
                             help={errors.mainMotivation?.message}
                         >
-                            <Input.TextArea
-                                rows={3}
-                                placeholder={t('form.mainMotivationPlaceholder')}
-                                {...register('mainMotivation', { required: 'La motivación principal es obligatoria' })}
+                            <Controller
+                                name="mainMotivation"
+                                control={control}
+                                rules={{ required: 'La motivación principal es obligatoria' }}
+                                render={({ field }) => (
+                                    <Input.TextArea
+                                        rows={3}
+                                        placeholder={t('form.mainMotivationPlaceholder')}
+                                        {...field}
+                                    />
+                                )}
                             />
                         </Form.Item>
                     </Card>
@@ -462,6 +590,24 @@ export default function Formulario() {
                     </Form.Item>
                 </Form>
             </div>
+
+            <Modal
+                title={t('form.recommendations') || 'Recomendaciones de Oficios'}
+                open={modalVisible}
+                onCancel={() => setModalVisible(false)}
+                footer={[
+                    <Button key="close" type="primary" onClick={() => setModalVisible(false)}>
+                        {t('form.close') || 'Cerrar'}
+                    </Button>
+                ]}
+                width={800}
+                style={{ maxHeight: '80vh' }}
+                styles={{ body: { maxHeight: '60vh', overflowY: 'auto' } }}
+            >
+                <div style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6' }}>
+                    {modalContent}
+                </div>
+            </Modal>
         </div>
     );
 }

@@ -118,6 +118,11 @@
         "mainMotivation": "¿Cuál es tu principal motivación o expectativa?",
         "mainMotivationPlaceholder": "¿Qué esperas conseguir con orientación laboral? ¿Cuál es tu objetivo?",
         "submit": "Enviar Formulario",
-        "reset": "Limpiar Formulario"
+        "reset": "Limpiar Formulario",
+        "successMessage": "Formulario enviado correctamente",
+        "errorMessage": "Error al enviar el formulario",
+        "sending": "Enviando...",
+        "recommendations": "Recomendaciones de Oficios",
+        "close": "Cerrar"
     }
 }
