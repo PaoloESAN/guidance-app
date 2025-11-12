@@ -1,10 +1,94 @@
 'use client';
 import { useTranslation } from 'react-i18next';
+import { useForm, Controller } from 'react-hook-form';
+import { useState } from 'react';
 import '@ant-design/v5-patch-for-react-19';
 import LanguageSelector from "./language-selector";
+import ButtonTheme from "./buttonTheme";
+import { Form, Input, Select, Checkbox, Button, Card, Row, Col, Alert, Space } from 'antd';
+
+interface FormData {
+    // Personal Info
+    fullName: string;
+    age: number;
+    gender: string;
+    educationLevel: string;
+
+    // Strengths
+    strengths: string[];
+    strengthsDescription: string;
+
+    // Interests
+    laboralInterests: string;
+
+    // Work Experience
+    previousJobs: string;
+    workExperienceDescription: string;
+
+    // Trades
+    trades: string[];
+    otherTrade: string;
+
+    // Availability
+    workingHours: string;
+    trainingPrograms: boolean;
+    hasTransport: boolean;
+
+    // Special Considerations
+    specialConsiderations: string;
+    mainMotivation: string;
+}
 
 export default function Formulario() {
     const { t } = useTranslation();
+    const { register, watch, handleSubmit, formState: { errors }, reset, control } = useForm<FormData>({
+        defaultValues: {
+            fullName: '',
+            age: undefined as any,
+            gender: '',
+            educationLevel: '',
+            strengths: [],
+            strengthsDescription: '',
+            laboralInterests: '',
+            previousJobs: '',
+            workExperienceDescription: '',
+            trades: [],
+            otherTrade: '',
+            workingHours: '',
+            trainingPrograms: false,
+            hasTransport: false,
+            specialConsiderations: '',
+            mainMotivation: '',
+        },
+        mode: 'onSubmit'
+    });
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [submitMessage, setSubmitMessage] = useState('');
+
+    const selectedStrengths = watch('strengths');
+    const selectedTrades = watch('trades');
+    const selectedInterests = watch('laboralInterests');
+
+    const onSubmit = async (data: FormData) => {
+        setIsLoading(true);
+        setSubmitMessage('');
+
+        try {
+            console.log('Datos del formulario:', data);
+
+            // Llamar a la funcion de wails
+            // const result = await window.go.main.App.ProcessForm(JSON.stringify(data));
+
+            setSubmitMessage(t('form.successMessage') || 'Formulario enviado correctamente');
+            reset();
+        } catch (error) {
+            console.error('Error:', error);
+            setSubmitMessage(t('form.errorMessage') || 'Error al enviar el formulario');
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const strengthOptions = [
         'strengthOptions.teamwork',
@@ -54,273 +138,330 @@ export default function Formulario() {
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
-            <div className="absolute top-4 right-4">
+        <div className="h-screen p-8">
+            <div className="absolute top-4 right-4 flex gap-3">
+                <ButtonTheme />
                 <LanguageSelector />
             </div>
-            <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8">
+
+            <div className="max-w-2xl mx-auto pb-8">
                 {/* Encabezado */}
                 <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-gray-800 mb-2">
+                    <h1 className="text-3xl font-bold mb-2">
                         {t('form.title')}
                     </h1>
-                    <p className="text-gray-600">
+                    <p className="text-base">
                         {t('form.subtitle')}
                     </p>
                 </div>
 
-                <form className="space-y-8">
+                {submitMessage && (
+                    <Alert
+                        message={submitMessage}
+                        type={submitMessage.includes('Error') ? 'error' : 'success'}
+                        showIcon
+                        closable
+                        className="mb-4"
+                    />
+                )}
+
+                <Form layout="vertical" onFinish={handleSubmit(onSubmit)} style={{ gap: '1rem' }}>
                     {/* Sección 1: Información Personal */}
-                    <div className="border-b pb-6">
-                        <h2 className="text-xl font-semibold text-gray-700 mb-4">{t('form.personalInfo')}</h2>
-
-                        <div className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    {t('form.fullName')} *
-                                </label>
-                                <input
-                                    type="text"
-                                    placeholder={t('form.fullNamePlaceholder')}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                />
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        {t('form.age')} *
-                                    </label>
-                                    <input
-                                        type="number"
-                                        min="14"
-                                        max="30"
-                                        placeholder={t('form.agePlaceholder')}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    <Card title={t('form.personalInfo')} style={{ marginBottom: '1rem' }} className='mb-4'>
+                        <Row gutter={16}>
+                            <Col xs={24}>
+                                <Form.Item
+                                    label={`${t('form.fullName')} *`}
+                                    validateStatus={errors.fullName ? 'error' : ''}
+                                    help={errors.fullName?.message}
+                                >
+                                    <Input
+                                        placeholder={t('form.fullNamePlaceholder')}
+                                        {...register('fullName', { required: 'El nombre es obligatorio' })}
                                     />
-                                </div>
+                                </Form.Item>
+                            </Col>
+                        </Row>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        {t('form.gender')}
-                                    </label>
-                                    <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                        <option>{t('form.genderOptions.select')}</option>
-                                        <option>{t('form.genderOptions.male')}</option>
-                                        <option>{t('form.genderOptions.female')}</option>
-                                        <option>{t('form.genderOptions.other')}</option>
-                                        <option>{t('form.genderOptions.preferNotToSay')}</option>
-                                    </select>
-                                </div>
-                            </div>
+                        <Row gutter={16}>
+                            <Col xs={24} sm={12}>
+                                <Form.Item
+                                    label={`${t('form.age')} *`}
+                                    validateStatus={errors.age ? 'error' : ''}
+                                    help={errors.age?.message}
+                                >
+                                    <Input
+                                        type="number"
+                                        min={14}
+                                        max={30}
+                                        placeholder={t('form.agePlaceholder')}
+                                        {...register('age', {
+                                            validate: (value) => {
+                                                if (!value && value !== 0) return 'La edad es obligatoria';
+                                                if (value < 14) return 'Mínimo 14 años';
+                                                if (value > 30) return 'Máximo 30 años';
+                                                return true;
+                                            }
+                                        })}
+                                    />
+                                </Form.Item>
+                            </Col>
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    {t('form.educationLevel')} *
-                                </label>
-                                <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                    <option>{t('form.educationLevelOptions.select')}</option>
-                                    <option>{t('form.educationLevelOptions.primaryIncomplete')}</option>
-                                    <option>{t('form.educationLevelOptions.primaryComplete')}</option>
-                                    <option>{t('form.educationLevelOptions.secondaryIncomplete')}</option>
-                                    <option>{t('form.educationLevelOptions.secondaryComplete')}</option>
-                                    <option>{t('form.educationLevelOptions.vocational')}</option>
-                                    <option>{t('form.educationLevelOptions.other')}</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                            <Col xs={24} sm={12}>
+                                <Form.Item
+                                    label={`${t('form.gender')} *`}
+                                    validateStatus={errors.gender ? 'error' : ''}
+                                    help={errors.gender?.message}
+                                >
+                                    <Select
+                                        placeholder={t('form.genderOptions.select')}
+                                        {...register('gender', { required: 'El género es obligatorio' })}
+                                        options={[
+                                            { label: t('form.genderOptions.male'), value: 'male' },
+                                            { label: t('form.genderOptions.female'), value: 'female' },
+                                            { label: t('form.genderOptions.other'), value: 'other' },
+                                            { label: t('form.genderOptions.preferNotToSay'), value: 'preferNotToSay' },
+                                        ]}
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+                        <Row gutter={16}>
+                            <Col xs={24}>
+                                <Form.Item
+                                    label={`${t('form.educationLevel')} *`}
+                                    validateStatus={errors.educationLevel ? 'error' : ''}
+                                    help={errors.educationLevel?.message}
+                                >
+                                    <Select
+                                        placeholder={t('form.educationLevelOptions.select')}
+                                        {...register('educationLevel', { required: 'El nivel educativo es obligatorio' })}
+                                        options={[
+                                            { label: t('form.educationLevelOptions.primaryIncomplete'), value: 'primaryIncomplete' },
+                                            { label: t('form.educationLevelOptions.primaryComplete'), value: 'primaryComplete' },
+                                            { label: t('form.educationLevelOptions.secondaryIncomplete'), value: 'secondaryIncomplete' },
+                                            { label: t('form.educationLevelOptions.secondaryComplete'), value: 'secondaryComplete' },
+                                            { label: t('form.educationLevelOptions.vocational'), value: 'vocational' },
+                                            { label: t('form.educationLevelOptions.other'), value: 'other' },
+                                        ]}
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                    </Card>
 
                     {/* Sección 2: Fortalezas y Habilidades */}
-                    <div className="border-b pb-6">
-                        <h2 className="text-xl font-semibold text-gray-700 mb-4">{t('form.strengths')}</h2>
-
-                        <div className="space-y-3">
-                            <p className="text-sm text-gray-600 mb-3">{t('form.selectAllThatApply')}</p>
-
-                            <div className="grid grid-cols-2 gap-3">
+                    <Card title={t('form.strengths')} style={{ marginBottom: '1rem' }} className="mb-4">
+                        <Form.Item label={t('form.selectAllThatApply')}>
+                            <div className="space-y-2">
                                 {strengthOptions.map((skill) => (
-                                    <label key={skill} className="flex items-center space-x-2 cursor-pointer">
-                                        <input type="checkbox" className="w-4 h-4 text-blue-600 rounded" />
-                                        <span className="text-sm text-gray-700">{t(`form.${skill}`)}</span>
-                                    </label>
+                                    <div key={skill}>
+                                        <Controller
+                                            name="strengths"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <Checkbox
+                                                    checked={field.value.includes(skill)}
+                                                    onChange={(e) => {
+                                                        if (e.target.checked) {
+                                                            field.onChange([...field.value, skill]);
+                                                        } else {
+                                                            field.onChange(field.value.filter((item: string) => item !== skill));
+                                                        }
+                                                    }}
+                                                >
+                                                    {t(`form.${skill}`)}
+                                                </Checkbox>
+                                            )}
+                                        />
+                                    </div>
                                 ))}
                             </div>
+                        </Form.Item>
 
-                            <div className="mt-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    {t('form.tellUsMore')}
-                                </label>
-                                <textarea
-                                    placeholder={t('form.tellUsMorePlaceholder')}
-                                    rows={3}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                />
-                            </div>
-                        </div>
-                    </div>
+                        <Form.Item label={t('form.tellUsMore')}>
+                            <Input.TextArea
+                                rows={3}
+                                placeholder={t('form.tellUsMorePlaceholder')}
+                                {...register('strengthsDescription')}
+                            />
+                        </Form.Item>
+                    </Card>
 
                     {/* Sección 3: Intereses Laborales */}
-                    <div className="border-b pb-6">
-                        <h2 className="text-xl font-semibold text-gray-700 mb-4">{t('form.laboralInterests')} *</h2>
-
-                        <div className="space-y-3">
-                            <p className="text-sm text-gray-600 mb-3">{t('form.whatTypeOfWork')}</p>
-
-                            <div className="grid grid-cols-2 gap-3">
+                    <Card title={`${t('form.laboralInterests')} *`} style={{ marginBottom: '1rem' }} className="mb-4">
+                        <Form.Item
+                            label={t('form.whatTypeOfWork')}
+                            validateStatus={errors.laboralInterests ? 'error' : ''}
+                            help={errors.laboralInterests?.message}
+                        >
+                            <div className="space-y-2">
                                 {interestOptions.map((interest) => (
-                                    <label key={interest} className="flex items-center space-x-2 cursor-pointer">
-                                        <input type="radio" name="interests" className="w-4 h-4 text-blue-600" />
-                                        <span className="text-sm text-gray-700">{t(`form.${interest}`)}</span>
-                                    </label>
+                                    <div key={interest}>
+                                        <label className="flex items-center cursor-pointer">
+                                            <input
+                                                type="radio"
+                                                value={interest}
+                                                {...register('laboralInterests', { required: 'Debes seleccionar un interés laboral' })}
+                                                className="mr-2"
+                                            />
+                                            <span>{t(`form.${interest}`)}</span>
+                                        </label>
+                                    </div>
                                 ))}
                             </div>
-                        </div>
-                    </div>
+                        </Form.Item>
+                    </Card>
 
                     {/* Sección 4: Experiencia Laboral */}
-                    <div className="border-b pb-6">
-                        <h2 className="text-xl font-semibold text-gray-700 mb-4">{t('form.workExperience')}</h2>
+                    <Card title={t('form.workExperience')} style={{ marginBottom: '1rem' }} className="mb-4">
+                        <Form.Item
+                            label={`${t('form.hadPreviousJobs')} *`}
+                            validateStatus={errors.previousJobs ? 'error' : ''}
+                            help={errors.previousJobs?.message}
+                        >
+                            <Select
+                                placeholder={t('form.previousJobsOptions.select')}
+                                {...register('previousJobs', { required: 'Debes seleccionar tu experiencia laboral' })}
+                                options={[
+                                    { label: t('form.previousJobsOptions.noFirstJob'), value: 'noFirstJob' },
+                                    { label: t('form.previousJobsOptions.punctualJobs'), value: 'punctualJobs' },
+                                    { label: t('form.previousJobsOptions.shortTermJobs'), value: 'shortTermJobs' },
+                                    { label: t('form.previousJobsOptions.stableExperience'), value: 'stableExperience' },
+                                ]}
+                            />
+                        </Form.Item>
 
-                        <div className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    {t('form.hadPreviousJobs')}
-                                </label>
-                                <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                    <option>{t('form.previousJobsOptions.select')}</option>
-                                    <option>{t('form.previousJobsOptions.noFirstJob')}</option>
-                                    <option>{t('form.previousJobsOptions.punctualJobs')}</option>
-                                    <option>{t('form.previousJobsOptions.shortTermJobs')}</option>
-                                    <option>{t('form.previousJobsOptions.stableExperience')}</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    {t('form.describeExperience')}
-                                </label>
-                                <textarea
-                                    placeholder={t('form.describeExperiencePlaceholder')}
-                                    rows={3}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                />
-                            </div>
-                        </div>
-                    </div>
+                        <Form.Item label={t('form.describeExperience')}>
+                            <Input.TextArea
+                                rows={3}
+                                placeholder={t('form.describeExperiencePlaceholder')}
+                                {...register('workExperienceDescription')}
+                            />
+                        </Form.Item>
+                    </Card>
 
                     {/* Sección 5: Oficios de Referencia */}
-                    <div className="border-b pb-6">
-                        <h2 className="text-xl font-semibold text-gray-700 mb-4">{t('form.tradesOfInterest')}</h2>
-
-                        <div className="space-y-4">
-                            <p className="text-sm text-gray-600">{t('form.anyTradeInterest')}</p>
-
-                            <div className="grid grid-cols-2 gap-3">
+                    <Card title={t('form.tradesOfInterest')} style={{ marginBottom: '1rem' }} className="mb-4">
+                        <Form.Item label={t('form.anyTradeInterest')}>
+                            <div className="space-y-2">
                                 {tradeOptions.map((trade) => (
-                                    <label key={trade} className="flex items-center space-x-2 cursor-pointer">
-                                        <input type="checkbox" className="w-4 h-4 text-blue-600 rounded" />
-                                        <span className="text-sm text-gray-700">{t(`form.${trade}`)}</span>
-                                    </label>
+                                    <div key={trade}>
+                                        <Controller
+                                            name="trades"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <Checkbox
+                                                    checked={field.value.includes(trade)}
+                                                    onChange={(e) => {
+                                                        if (e.target.checked) {
+                                                            field.onChange([...field.value, trade]);
+                                                        } else {
+                                                            field.onChange(field.value.filter((item: string) => item !== trade));
+                                                        }
+                                                    }}
+                                                >
+                                                    {t(`form.${trade}`)}
+                                                </Checkbox>
+                                            )}
+                                        />
+                                    </div>
                                 ))}
                             </div>
+                        </Form.Item>
 
-                            <div>
-                                <input
-                                    type="text"
-                                    placeholder={t('form.otherTrade')}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                />
-                            </div>
-                        </div>
-                    </div>
+                        <Form.Item label={t('form.otherTrade')}>
+                            <Input
+                                placeholder={t('form.otherTrade')}
+                                {...register('otherTrade')}
+                            />
+                        </Form.Item>
+                    </Card>
 
                     {/* Sección 6: Disponibilidad */}
-                    <div className="border-b pb-6">
-                        <h2 className="text-xl font-semibold text-gray-700 mb-4">{t('form.availability')} *</h2>
+                    <Card title={`${t('form.availability')} *`} style={{ marginBottom: '1rem' }} className="mb-4">
+                        <Form.Item
+                            label={t('form.workingHoursAvailability')}
+                            validateStatus={errors.workingHours ? 'error' : ''}
+                            help={errors.workingHours?.message}
+                        >
+                            <Select
+                                placeholder={t('form.availabilityOptions.select')}
+                                {...register('workingHours', { required: 'Debes seleccionar disponibilidad' })}
+                                options={[
+                                    { label: t('form.availabilityOptions.fullTime'), value: 'fullTime' },
+                                    { label: t('form.availabilityOptions.partTime'), value: 'partTime' },
+                                    { label: t('form.availabilityOptions.mornings'), value: 'mornings' },
+                                    { label: t('form.availabilityOptions.afternoons'), value: 'afternoons' },
+                                    { label: t('form.availabilityOptions.weekends'), value: 'weekends' },
+                                    { label: t('form.availabilityOptions.flexible'), value: 'flexible' },
+                                ]}
+                            />
+                        </Form.Item>
 
-                        <div className="space-y-3">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    {t('form.workingHoursAvailability')}
-                                </label>
-                                <select className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                                    <option>{t('form.availabilityOptions.select')}</option>
-                                    <option>{t('form.availabilityOptions.fullTime')}</option>
-                                    <option>{t('form.availabilityOptions.partTime')}</option>
-                                    <option>{t('form.availabilityOptions.mornings')}</option>
-                                    <option>{t('form.availabilityOptions.afternoons')}</option>
-                                    <option>{t('form.availabilityOptions.weekends')}</option>
-                                    <option>{t('form.availabilityOptions.flexible')}</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label className="flex items-center space-x-2 cursor-pointer">
-                                    <input type="checkbox" className="w-4 h-4 text-blue-600 rounded" />
-                                    <span className="text-sm text-gray-700">
+                        <Form.Item>
+                            <div className="space-y-2">
+                                <div>
+                                    <Checkbox
+                                        {...register('trainingPrograms')}
+                                    >
                                         {t('form.trainingPrograms')}
-                                    </span>
-                                </label>
-                            </div>
-
-                            <div>
-                                <label className="flex items-center space-x-2 cursor-pointer">
-                                    <input type="checkbox" className="w-4 h-4 text-blue-600 rounded" />
-                                    <span className="text-sm text-gray-700">
+                                    </Checkbox>
+                                </div>
+                                <div>
+                                    <Checkbox
+                                        {...register('hasTransport')}
+                                    >
                                         {t('form.hasTransport')}
-                                    </span>
-                                </label>
+                                    </Checkbox>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        </Form.Item>
+                    </Card>
 
                     {/* Sección 7: Consideraciones Especiales */}
-                    <div className="pb-6">
-                        <h2 className="text-xl font-semibold text-gray-700 mb-4">{t('form.specialConsiderations')}</h2>
+                    <Card title={t('form.specialConsiderations')} style={{ marginBottom: '1rem' }} className="mb-4">
+                        <Form.Item label={t('form.specialConsiderationsDescription')}>
+                            <Input.TextArea
+                                rows={3}
+                                placeholder={t('form.specialConsiderationsPlaceholder')}
+                                {...register('specialConsiderations')}
+                            />
+                        </Form.Item>
 
-                        <div className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    {t('form.specialConsiderationsDescription')}
-                                </label>
-                                <textarea
-                                    placeholder={t('form.specialConsiderationsPlaceholder')}
-                                    rows={3}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    {t('form.mainMotivation')} *
-                                </label>
-                                <textarea
-                                    placeholder={t('form.mainMotivationPlaceholder')}
-                                    rows={3}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                />
-                            </div>
-                        </div>
-                    </div>
+                        <Form.Item
+                            label={`${t('form.mainMotivation')} *`}
+                            validateStatus={errors.mainMotivation ? 'error' : ''}
+                            help={errors.mainMotivation?.message}
+                        >
+                            <Input.TextArea
+                                rows={3}
+                                placeholder={t('form.mainMotivationPlaceholder')}
+                                {...register('mainMotivation', { required: 'La motivación principal es obligatoria' })}
+                            />
+                        </Form.Item>
+                    </Card>
 
                     {/* Botones */}
-                    <div className="flex gap-4 pt-4">
-                        <button
-                            type="submit"
-                            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors"
-                        >
-                            {t('form.submit')}
-                        </button>
-                        <button
-                            type="reset"
-                            className="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-3 rounded-lg transition-colors"
-                        >
-                            {t('form.reset')}
-                        </button>
-                    </div>
-                </form>
+                    <Form.Item>
+                        <Space style={{ width: '100%', justifyContent: 'flex-end' }}>
+                            <Button
+                                onClick={() => reset()}
+                            >
+                                {t('form.reset')}
+                            </Button>
+                            <Button
+                                type="primary"
+                                htmlType="submit"
+                                loading={isLoading}
+                            >
+                                {isLoading ? (t('form.sending') || 'Enviando...') : t('form.submit')}
+                            </Button>
+                        </Space>
+                    </Form.Item>
+                </Form>
             </div>
         </div>
-    )
+    );
 }
