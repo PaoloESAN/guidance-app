@@ -9,3 +9,7 @@ export function Greet(arg1) {
 export function QueryGroqAPI(arg1) {
   return window['go']['main']['App']['QueryGroqAPI'](arg1);
 }
+
+export function Scraping(arg1) {
+  return window['go']['main']['App']['Scraping'](arg1);
+}

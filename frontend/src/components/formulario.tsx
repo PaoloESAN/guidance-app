@@ -7,6 +7,8 @@ import LanguageSelector from "./language-selector";
 import ButtonTheme from "./buttonTheme";
 import { Form, Input, Select, Checkbox, Button, Card, Row, Col, Alert, Space, Modal } from 'antd';
 import { QueryGroqAPI } from '../../wailsjs/go/main/App';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 interface FormData {
     // Personal Info
     fullName: string;
@@ -71,6 +73,12 @@ export default function Formulario() {
     const selectedStrengths = watch('strengths');
     const selectedTrades = watch('trades');
     const selectedInterests = watch('laboralInterests');
+
+    const router = useRouter();
+
+    const irEmpleos = () => {
+        router.push(`/empleos?oficio=${selectedTrades[0] || 'general'}`);
+    }
 
     const onSubmit = async (data: FormData) => {
         setIsLoading(true);
@@ -195,6 +203,12 @@ Por favor, proporciona:
                         {t('form.subtitle')}
                     </p>
                 </div>
+
+                <Link href={`/empleos?oficio=${selectedTrades[0] || 'general'}`} className="mb-4 inline-block">
+                    <Button>
+                        {t('form.goToJobs')}
+                    </Button>
+                </Link>
 
                 {submitMessage && (
                     <Alert
@@ -594,6 +608,7 @@ Por favor, proporciona:
             <Modal
                 title={t('form.recommendations') || 'Recomendaciones de Oficios'}
                 open={modalVisible}
+                onOk={irEmpleos}
                 onCancel={() => setModalVisible(false)}
                 footer={[
                     <Button key="close" type="primary" onClick={() => setModalVisible(false)}>

@@ -51,6 +51,6 @@ func (a *App) QueryGroqAPI(query string) (string, error) {
 	return utils.GroqApi(query)
 }
 
-func (a *App) Spcraping(url string) (string, error) {
-	return utils.ScrapingOfertas("https://pe.linkedin.com/jobs/t%C3%A9cnicos-empleos")
+func (a *App) Scraping(url string) ([]utils.Job, error) {
+	return utils.ScrapingOfertas(url)
 }
