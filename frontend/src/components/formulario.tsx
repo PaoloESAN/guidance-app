@@ -9,34 +9,29 @@ import { Form, Input, Select, Checkbox, Button, Card, Row, Col, Alert, Space, Mo
 import { QueryGroqAPI } from '../../wailsjs/go/main/App';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useSupabase } from '@/hooks/useSupabase';
+import { TablesInsert } from '../../database.types';
 interface FormData {
-    // Personal Info
     fullName: string;
     age: number;
     gender: string;
     educationLevel: string;
 
-    // Strengths
     strengths: string[];
     strengthsDescription: string;
 
-    // Interests
     laboralInterests: string;
 
-    // Work Experience
     previousJobs: string;
     workExperienceDescription: string;
 
-    // Trades
     trades: string[];
     otherTrade: string;
 
-    // Availability
     workingHours: string;
     trainingPrograms: boolean;
     hasTransport: boolean;
 
-    // Special Considerations
     specialConsiderations: string;
     mainMotivation: string;
 }
@@ -69,6 +64,7 @@ export default function Formulario() {
     const [submitMessage, setSubmitMessage] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
     const [modalContent, setModalContent] = useState('');
+    const { insertUser, insertRecomendation } = useSupabase();
 
     const selectedStrengths = watch('strengths');
     const selectedTrades = watch('trades');
@@ -76,8 +72,17 @@ export default function Formulario() {
 
     const router = useRouter();
 
+    const getTranslatedValue = (key: string) => {
+        return t((`form.${key}`), { lng: 'es' });
+    };
+
+    const getTranslatedTrades = () => {
+        return selectedTrades.map((trade: string) => getTranslatedValue(trade));
+    };
+
     const irEmpleos = () => {
-        router.push(`/empleos?oficio=${selectedTrades[0] || 'general'}`);
+        const tradeName = getTranslatedTrades()[0] || 'general';
+        router.push(`/empleos?oficio=${tradeName}`);
     }
 
     const onSubmit = async (data: FormData) => {
@@ -92,26 +97,26 @@ export default function Formulario() {
 INFORMACIÓN PERSONAL:
 - Nombre: ${data.fullName}
 - Edad: ${data.age} años
-- Género: ${data.gender}
-- Nivel educativo: ${data.educationLevel}
+- Género: ${getTranslatedValue(data.gender)}
+- Nivel educativo: ${getTranslatedValue(data.educationLevel)}
 
 FORTALEZAS Y HABILIDADES:
-- Fortalezas seleccionadas: ${data.strengths.join(', ') || 'No especificadas'}
+- Fortalezas seleccionadas: ${data.strengths.map((s: string) => getTranslatedValue(s)).join(', ') || 'No especificadas'}
 - Descripción adicional: ${data.strengthsDescription || 'No proporcionada'}
 
 INTERESES LABORALES:
-- Tipo de trabajo preferido: ${data.laboralInterests}
+- Tipo de trabajo preferido: ${getTranslatedValue(data.laboralInterests)}
 
 EXPERIENCIA LABORAL:
-- Experiencia previa: ${data.previousJobs}
+- Experiencia previa: ${getTranslatedValue(data.previousJobs)}
 - Descripción de experiencia: ${data.workExperienceDescription || 'No proporcionada'}
 
 OFICIOS DE INTERÉS:
-- Oficios seleccionados: ${data.trades.join(', ') || 'No especificados'}
+- Oficios seleccionados: ${getTranslatedTrades().join(', ') || 'No especificados'}
 - Otros oficios de interés: ${data.otherTrade || 'No especificados'}
 
 DISPONIBILIDAD:
-- Horarios disponibles: ${data.workingHours}
+- Horarios disponibles: ${getTranslatedValue(data.workingHours)}
 - Interesado en programas de capacitación: ${data.trainingPrograms ? 'Sí' : 'No'}
 - Tiene transporte: ${data.hasTransport ? 'Sí' : 'No'}
 
@@ -126,11 +131,39 @@ Por favor, proporciona:
 4. Perspectivas de empleo y salario potencial
 5. Próximos pasos recomendados para iniciar en estos oficios`;
 
-            const respuesta = await QueryGroqAPI(prompt);
-            setModalContent(respuesta);
-            setModalVisible(true);
+            const usuarioData: TablesInsert<'perfiles_usuarios'> = {
+                nombre_completo: data.fullName,
+                edad: data.age,
+                genero: data.gender,
+                nivel_educativo: data.educationLevel,
+                fortalezas: data.strengths.length > 0 ? data.strengths : null,
+                descripcion_fortalezas: data.strengthsDescription || null,
+                intereses_laborales: data.laboralInterests,
+                empleos_previos: data.previousJobs,
+                descripcion_experiencia: data.workExperienceDescription || null,
+                oficios: data.trades.length > 0 ? data.trades : null,
+                otro_oficio: data.otherTrade || null,
+                horario_disponible: data.workingHours,
+                interes_programas_capacitacion: data.trainingPrograms,
+                tiene_transporte: data.hasTransport,
+                consideraciones_especiales: data.specialConsiderations || null,
+                motivacion_principal: data.mainMotivation,
+                idioma: 'es'
+            };
+
+            const usuarioGuardado = await insertUser(usuarioData);
+
+            if (usuarioGuardado && usuarioGuardado.length > 0) {
+                const usuarioId = usuarioGuardado[0].id;
+
+                const respuesta = await QueryGroqAPI(prompt);
+                setModalContent(respuesta);
+                setModalVisible(true);
+
+                await insertRecomendation(usuarioId, respuesta);
+            }
+
             setSubmitMessage(t('form.successMessage') || 'Formulario enviado correctamente');
-            reset();
         } catch (error) {
             console.error('Error:', error);
             setSubmitMessage(t('form.errorMessage') || 'Error al enviar el formulario');
@@ -204,7 +237,7 @@ Por favor, proporciona:
                     </p>
                 </div>
 
-                <Link href={`/empleos?oficio=${selectedTrades[0] || 'general'}`} className="mb-4 inline-block">
+                <Link href={`/empleos?oficio=${getTranslatedTrades()[0] || 'general'}`} className="mb-4 inline-block">
                     <Button>
                         {t('form.goToJobs')}
                     </Button>
@@ -610,11 +643,6 @@ Por favor, proporciona:
                 open={modalVisible}
                 onOk={irEmpleos}
                 onCancel={() => setModalVisible(false)}
-                footer={[
-                    <Button key="close" type="primary" onClick={() => setModalVisible(false)}>
-                        {t('form.close') || 'Cerrar'}
-                    </Button>
-                ]}
                 width={800}
                 style={{ maxHeight: '80vh' }}
                 styles={{ body: { maxHeight: '60vh', overflowY: 'auto' } }}
