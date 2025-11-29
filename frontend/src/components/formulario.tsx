@@ -2,7 +2,6 @@
 import { useTranslation } from 'react-i18next';
 import { useForm, Controller } from 'react-hook-form';
 import { useState } from 'react';
-import '@ant-design/v5-patch-for-react-19';
 import LanguageSelector from "./language-selector";
 import ButtonTheme from "./buttonTheme";
 import { Form, Input, Select, Checkbox, Button, Card, Row, Col, Alert, Space, Modal } from 'antd';

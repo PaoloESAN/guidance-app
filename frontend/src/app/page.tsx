@@ -1,7 +1,6 @@
 "use client";
 import { Button } from "antd";
 import Link from "next/link";
-import '@ant-design/v5-patch-for-react-19';
 import { useTranslation } from 'react-i18next';
 import LanguageSelector from "@/components/language-selector";
 
