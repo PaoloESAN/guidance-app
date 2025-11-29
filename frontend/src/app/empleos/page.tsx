@@ -4,7 +4,7 @@ import '@ant-design/v5-patch-for-react-19';
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Card, Row, Col, Empty, Button, Badge, Spin, Space } from 'antd';
-import { HomeOutlined, BgColorsOutlined, GlobalOutlined } from '@ant-design/icons';
+import { HomeOutlined } from '@ant-design/icons';
 import { Scraping } from '../../../wailsjs/go/main/App';
 import { utils } from '../../../wailsjs/go/models';
 import ButtonTheme from '@/components/buttonTheme';
