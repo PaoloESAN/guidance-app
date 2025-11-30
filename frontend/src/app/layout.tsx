@@ -28,7 +28,7 @@ export default function RootLayout({
                 className={`${inter.className} antialiased`}
             >
                 <I18nProvider>
-                    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+                    <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark" enableSystem={false} disableTransitionOnChange>
                         <AntdRegistry>
                             <AntProvider>{children}</AntProvider>
                         </AntdRegistry>

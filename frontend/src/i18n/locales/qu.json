@@ -6,8 +6,13 @@
         "aymara": "Aymara"
     },
     "home": {
-        "welcome": "Allin hamusqaykichik qallariy p'anqaman",
-        "goToForm": "Forma nisqaman riy"
+        "welcome": "FALTA CAMBIAR",
+        "subtitle": "FALTA CAMBIAR",
+        "goToForm": "FALTA CAMBIAR",
+        "features": {
+            "ai": "FALTA CAMBIAR",
+            "jobs": "FALTA CAMBIAR"
+        }
     },
     "form": {
         "title": "Perfil de Orientación Carrera nisqamanta",

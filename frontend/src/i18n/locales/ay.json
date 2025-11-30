@@ -6,8 +6,13 @@
         "aymara": "Aymara"
     },
     "home": {
-        "welcome": "Uka utarux walikpun jutapxtaxa",
-        "goToForm": "Forma ukar sarañamawa"
+        "welcome": "FALTA CAMBIAR",
+        "subtitle": "FALTA CAMBIAR",
+        "goToForm": "FALTA CAMBIAR",
+        "features": {
+            "ai": "FALTA CAMBIAR",
+            "jobs": "FALTA CAMBIAR"
+        }
     },
     "form": {
         "title": "Ima sarawinakataki uñtayawi",

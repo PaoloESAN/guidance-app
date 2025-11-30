@@ -6,8 +6,13 @@
         "aymara": "Aymara"
     },
     "home": {
-        "welcome": "Bienvenido a la página de inicio",
-        "goToForm": "Ir al formulario"
+        "welcome": "Descubre tu Futuro Profesional",
+        "subtitle": "Orientación vocacional potenciada por Inteligencia Artificial para encontrar tu camino ideal y conectar con oportunidades reales.",
+        "goToForm": "Comenzar Ahora",
+        "features": {
+            "ai": "Análisis con IA",
+            "jobs": "Empleos Reales"
+        }
     },
     "form": {
         "title": "Perfil de Orientación Laboral",
