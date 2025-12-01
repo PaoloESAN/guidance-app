@@ -3,14 +3,13 @@ import { useTranslation } from 'react-i18next';
 import { useForm, Controller } from 'react-hook-form';
 import { useState } from 'react';
 import LanguageSelector from "./language-selector";
-import ButtonTheme from "./buttonTheme";
-import { Form, Input, Select, Checkbox, Button, Card, Row, Col, Alert, Space, Modal, Steps, Typography } from 'antd';
-import { QueryGroqAPI } from '../../wailsjs/go/main/App';
+import { Form, Input, Select, Checkbox, Button, Card, Row, Col, Modal, Steps, Typography } from 'antd';
+import { QueryGroqAPI, ObtenerTerminoBusqueda } from '../../wailsjs/go/main/App';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSupabase } from '@/hooks/useSupabase';
 import { TablesInsert } from '../../database.types';
-import { ArrowLeft, ArrowRight, Send, CheckCircle2, User, Brain, Briefcase, Hammer, Clock, HeartHandshake, Compass } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Send, User, Brain, Briefcase, Hammer, Clock, HeartHandshake, Compass } from 'lucide-react';
 
 const { Title, Text } = Typography;
 
@@ -95,9 +94,15 @@ export default function Formulario() {
         return selectedTrades.map((trade: string) => getTranslatedValue(trade));
     };
 
-    const irEmpleos = () => {
-        const tradeName = getTranslatedTrades()[0] || 'general';
-        router.push(`/empleos?oficio=${tradeName}`);
+    const irEmpleos = async () => {
+        try {
+            const tradesLimpios = selectedTrades.map((trade: string) => trade.replace('tradeOptions.', ''));
+            const terminoBusqueda = await ObtenerTerminoBusqueda(tradesLimpios);
+            router.push(`/empleos?oficio=${encodeURIComponent(terminoBusqueda)}`);
+        } catch (error) {
+            console.error('Error al obtener término de búsqueda:', error);
+            router.push(`/empleos?oficio=general`);
+        }
     }
 
     const nextStep = async () => {

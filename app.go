@@ -54,3 +54,28 @@ func (a *App) QueryGroqAPI(query string) (string, error) {
 func (a *App) Scraping(url string) ([]utils.Job, error) {
 	return utils.ScrapingOfertas(url)
 }
+
+// ObtenerTerminoBusqueda analiza los trades seleccionados y retorna el mejor término de búsqueda
+func (a *App) ObtenerTerminoBusqueda(tradesSeleccionados []string) string {
+	return utils.ObtenerTerminoBusqueda(tradesSeleccionados)
+}
+
+// ObtenerTerminoBusquedaConCategoria retorna el término de búsqueda junto con su categoría
+func (a *App) ObtenerTerminoBusquedaConCategoria(tradesSeleccionados []string) map[string]string {
+	return utils.ObtenerTerminoBusquedaConCategoria(tradesSeleccionados)
+}
+
+// ObtenerTodosLosTerminos retorna todos los términos de búsqueda posibles
+func (a *App) ObtenerTodosLosTerminos() map[string]string {
+	return utils.ObtenerTodosLosTerminos()
+}
+
+// ObtenerTrayectorias retorna las posibles trayectorias de carrera basadas en los oficios seleccionados
+func (a *App) ObtenerTrayectorias(tradesSeleccionados []string) []string {
+	return utils.ObtenerTrayectorias(tradesSeleccionados)
+}
+
+// ObtenerInfoCompleta retorna información completa para la búsqueda de empleo
+func (a *App) ObtenerInfoCompleta(tradesSeleccionados []string) map[string]interface{} {
+	return utils.ObtenerInfoCompleta(tradesSeleccionados)
+}

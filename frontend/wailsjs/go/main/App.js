@@ -6,6 +6,26 @@ export function Greet(arg1) {
   return window['go']['main']['App']['Greet'](arg1);
 }
 
+export function ObtenerInfoCompleta(arg1) {
+  return window['go']['main']['App']['ObtenerInfoCompleta'](arg1);
+}
+
+export function ObtenerTerminoBusqueda(arg1) {
+  return window['go']['main']['App']['ObtenerTerminoBusqueda'](arg1);
+}
+
+export function ObtenerTerminoBusquedaConCategoria(arg1) {
+  return window['go']['main']['App']['ObtenerTerminoBusquedaConCategoria'](arg1);
+}
+
+export function ObtenerTodosLosTerminos() {
+  return window['go']['main']['App']['ObtenerTodosLosTerminos']();
+}
+
+export function ObtenerTrayectorias(arg1) {
+  return window['go']['main']['App']['ObtenerTrayectorias'](arg1);
+}
+
 export function QueryGroqAPI(arg1) {
   return window['go']['main']['App']['QueryGroqAPI'](arg1);
 }

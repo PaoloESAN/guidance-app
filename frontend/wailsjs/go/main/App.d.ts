@@ -4,6 +4,16 @@ import {utils} from '../models';
 
 export function Greet(arg1:string):Promise<string>;
 
+export function ObtenerInfoCompleta(arg1:Array<string>):Promise<Record<string, any>>;
+
+export function ObtenerTerminoBusqueda(arg1:Array<string>):Promise<string>;
+
+export function ObtenerTerminoBusquedaConCategoria(arg1:Array<string>):Promise<Record<string, string>>;
+
+export function ObtenerTodosLosTerminos():Promise<Record<string, string>>;
+
+export function ObtenerTrayectorias(arg1:Array<string>):Promise<Array<string>>;
+
 export function QueryGroqAPI(arg1:string):Promise<string>;
 
 export function Scraping(arg1:string):Promise<Array<utils.Job>>;
