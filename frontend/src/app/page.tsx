@@ -1,10 +1,9 @@
 "use client";
-import { Button, Card, Typography } from "antd";
+import { Button, Typography } from "antd";
 import { ArrowRight, Sparkles, Brain, Briefcase, Compass } from "lucide-react";
 import Link from "next/link";
 import { useTranslation } from 'react-i18next';
 import LanguageSelector from "@/components/language-selector";
-import ButtonTheme from "@/components/buttonTheme";
 
 const { Title, Paragraph } = Typography;
 
@@ -35,7 +34,7 @@ export default function Home() {
                         <div className="flex justify-center">
                             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-medium border border-blue-200 dark:border-blue-800">
                                 <Sparkles size={16} />
-                                <span>Potenciado por IA</span>
+                                <span>{t('home.poweredByAI')}</span>
                             </div>
                         </div>
 
@@ -74,7 +73,7 @@ export default function Home() {
                             <div className="p-3 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400">
                                 <Compass size={24} />
                             </div>
-                            <h3 className="font-semibold text-slate-800 dark:text-slate-200">Orientación Total</h3>
+                            <h3 className="font-semibold text-slate-800 dark:text-slate-200">{t('home.features.guidance')}</h3>
                         </div>
                     </div>
                 </div>

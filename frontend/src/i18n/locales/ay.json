@@ -6,12 +6,14 @@
         "aymara": "Aymara"
     },
     "home": {
-        "welcome": "FALTA CAMBIAR",
-        "subtitle": "FALTA CAMBIAR",
-        "goToForm": "FALTA CAMBIAR",
+        "welcome": "Jutïr profesionalamam uñt’añamawa",
+        "subtitle": "Carrera ukan irnaqawipax Inteligencia Artificial ukamp ch’amanchatawa, ukhamat thakhi suma thakhim jikxatañataki ukhamarak chiqpach oportunidades ukanakamp chikt’atäñataki.",
+        "goToForm": "Jichhaxa Qalltañani",
+        "poweredByAI": "AI ukan ch’amanchatawa",
         "features": {
-            "ai": "FALTA CAMBIAR",
-            "jobs": "FALTA CAMBIAR"
+            "ai": "AI ukamp uñakipaña",
+            "jobs": "Chiqpach Irnaqawinaka",
+            "guidance": "Taqi kunat sipansa Orientación"
         }
     },
     "form": {

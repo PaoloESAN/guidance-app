@@ -9,9 +9,11 @@
         "welcome": "Descubre tu Futuro Profesional",
         "subtitle": "Orientación vocacional potenciada por Inteligencia Artificial para encontrar tu camino ideal y conectar con oportunidades reales.",
         "goToForm": "Comenzar Ahora",
+        "poweredByAI": "Potenciado por IA",
         "features": {
             "ai": "Análisis con IA",
-            "jobs": "Empleos Reales"
+            "jobs": "Empleos Reales",
+            "guidance": "Orientación Total"
         }
     },
     "form": {

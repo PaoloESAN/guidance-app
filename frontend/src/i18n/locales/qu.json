@@ -6,12 +6,14 @@
         "aymara": "Aymara"
     },
     "home": {
-        "welcome": "FALTA CAMBIAR",
-        "subtitle": "FALTA CAMBIAR",
-        "goToForm": "FALTA CAMBIAR",
+        "welcome": "Hamuq profesionalniykita tariy",
+        "subtitle": "Carrera pusay Inteligencia Artificial kaqwan kallpachasqa allin ñanniyki tarinaykipaq chaymanta chiqa oportunidadkunawan tinkinaykipaq.",
+        "goToForm": "Kunanmanta qallariy",
+        "poweredByAI": "AI nisqawan kallpachasqa",
         "features": {
-            "ai": "FALTA CAMBIAR",
-            "jobs": "FALTA CAMBIAR"
+            "ai": "AI nisqawan t'aqwiy",
+            "jobs": "Chiqap Llamkanakuna",
+            "guidance": "Orientación Total nisqa"
         }
     },
     "form": {
